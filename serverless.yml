@@ -12,7 +12,7 @@ provider:
   region: West US 2
   runtime: nodejs12
 
-  environment:
+  environment: # these will be created as application settings
     VARIABLE_FOO: 'foo'
 
   # you can define apim configuration here
