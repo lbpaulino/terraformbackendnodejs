@@ -1,59 +1,36 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = "2.96.0"
-    }
-  }
+data "azurerm_resource_group" "instance_rg" {
+  name = var.resource_group_name
 }
 
-provider "azurerm" {
-  subscription_id = "6912d7a0-bc28-459a-9407-33bbba641c07"
-  client_id       = "7048caf3-327c-4b70-9461-e47683ec9b6f"
-  client_secret   = "BkK7Q~mxpNI4TIH-eb7B9oGvx6ntABH~L-iQn"
-  tenant_id       = "70c0f6d9-7f3b-4425-a6b6-09b47643ec58"
-  features {}
+data "azurerm_app_service_plan" "instance_plan" {
+  resource_group_name = var.resource_group_name
+  name                = var.app_service_plan_name
 }
 
+resource "azurerm_app_service" "instance" {
+  resource_group_name = data.azurerm_resource_group.instance_rg.name
+  location            = data.azurerm_resource_group.instance_rg.location
+  app_service_plan_id = data.azurerm_app_service_plan.instance_plan.id
 
-locals {
-  resource_group="app-grp"
-  location="North Europe"
-}
+  name                    = var.app_service_name
+  client_affinity_enabled = var.client_affinity_enabled
+  https_only              = var.https_only
 
-
-resource "azurerm_resource_group" "app_grp"{
-  name=local.resource_group
-  location=local.location
-}
-
-resource "azurerm_storage_account" "functionstore_089889" {
-  name                     = "functionstore089889"
-  resource_group_name      = azurerm_resource_group.app_grp.name
-  location                 = azurerm_resource_group.app_grp.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-resource "azurerm_app_service_plan" "function_app_plan" {
-  name                = "hellowordazure"
-  location            = azurerm_resource_group.app_grp.location
-  resource_group_name = azurerm_resource_group.app_grp.name
-
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
-}
-
-resource "azurerm_function_app" "functionapp_1234000" {
-  name                       = "functionapp1234000"
-  location                   = azurerm_resource_group.app_grp.location
-  resource_group_name        = azurerm_resource_group.app_grp.name
-  app_service_plan_id        = azurerm_app_service_plan.function_app_plan.id
-  storage_account_name       = azurerm_storage_account.functionstore_089889.name
-  storage_account_access_key = azurerm_storage_account.functionstore_089889.primary_access_key
   site_config {
-    nodejs_version = "16.x"
+    http2_enabled             = var.http2_enabled
+    linux_fx_version          = var.linux_fx_version
+    use_32_bit_worker_process = var.use_32_bit_worker_process
   }
+
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE"           = var.website_run_from_package == true ? "1" : "0"
+    "SCM_DO_BUILD_DURING_DEPLOYMENT"     = var.scm_do_build_during_deployment == true ? "1" : "0"
+    "DISABLE_HUGO_BUILD"                 = var.disable_hugo_build == true ? "1" : "0"
+    "WEBSITE_HTTPLOGGING_RETENTION_DAYS" = var.website_httplogging_retention_days
+  }
+}
+
+output "azurerm_app_service-output" {
+  value     = azurerm_app_service.instance
+  sensitive = true
 }
