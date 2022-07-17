@@ -1,7 +1,7 @@
 # Azure function
 
 ## Para clonar o projeto
-`git clone https://github.com/mrdouglasmorais/ terraformbackendnodejs`
+`git clone https://github.com/mrdouglasmorais/terraformbackendnodejs`
 
 ## Para instalar as dependências do projeto:
 `npm install` ou `yarn`
@@ -12,22 +12,22 @@
 
 ## Terraform files:
 ```
-_
-  |- terraform
+-| terraform
+  -| main.tf
 ```
 
 ## Configuração de pipelines:
 ```
 _
-  |- .github
-    |- worflows
-      |- prod.yml
-      |- dev.yml
+-| .github
+  -| worflows
+    -| prod.yml
+    -| dev.yml
 ```
 
 ### Mais detalhes sobre o projeto em:
 [Terraform - Azure Functions](https://medium.com/@mr.douglasmorais23/terraform-a-final-de-contas-o-que-%C3%A9-918f8dcfd09c) <br>
-[Pipelines - Github Actions](https://medium.com/@mr.douglasmorais23/pipeline-cloud-functions-com-github-actions-8d2c90a6ead7) <br>
+[Pipelines - Github Actions](https://medium.com/@mr.douglasmorais23/pipeline-web-app-com-terraform-e-github-actions-5e423dfd894d) <br>
 
 Acesse a documentação oficial do [expressjs](https://expressjs.com/pt-br/) para mais informações.
 
