@@ -1,36 +1,46 @@
-data "azurerm_resource_group" "instance_rg" {
-  name = var.resource_group_name
-}
-
-data "azurerm_app_service_plan" "instance_plan" {
-  resource_group_name = var.resource_group_name
-  name                = var.app_service_plan_name
-}
-
-resource "azurerm_app_service" "instance" {
-  resource_group_name = data.azurerm_resource_group.instance_rg.name
-  location            = data.azurerm_resource_group.instance_rg.location
-  app_service_plan_id = data.azurerm_app_service_plan.instance_plan.id
-
-  name                    = var.app_service_name
-  client_affinity_enabled = var.client_affinity_enabled
-  https_only              = var.https_only
-
-  site_config {
-    http2_enabled             = var.http2_enabled
-    linux_fx_version          = var.linux_fx_version
-    use_32_bit_worker_process = var.use_32_bit_worker_process
+# Configurando Azure provider
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 2.65"
+    }
   }
-
-  app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE"           = var.website_run_from_package == true ? "1" : "0"
-    "SCM_DO_BUILD_DURING_DEPLOYMENT"     = var.scm_do_build_during_deployment == true ? "1" : "0"
-    "DISABLE_HUGO_BUILD"                 = var.disable_hugo_build == true ? "1" : "0"
-    "WEBSITE_HTTPLOGGING_RETENTION_DAYS" = var.website_httplogging_retention_days
+  required_version = ">= 0.14.9"
+}
+provider "azurerm" {
+  features {}
+}
+# Gere um número inteiro aleatório para criar um nome globalmente exclusivo
+resource "random_integer" "ri" {
+  min = 10000
+  max = 99999
+}
+# Criar o grupo de recursos
+resource "azurerm_resource_group" "rg" {
+  name     = "myResourceGroup-${random_integer.ri.result}"
+  location = "eastus"
+}
+# Criar o Plano de Serviço de Aplicativo do Linux
+resource "azurerm_app_service_plan" "appserviceplan" {
+  name                = "webapp-asp-${random_integer.ri.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku {
+    tier = "Free"
+    size = "F1"
   }
 }
-
-output "azurerm_app_service-output" {
-  value     = azurerm_app_service.instance
-  sensitive = true
+# Crie o aplicativo Web, passe a ID do Plano de Serviço de Aplicativo e implante o código de um repositório público do GitHub
+resource "azurerm_app_service" "webapp" {
+  name                = "webapp-${random_integer.ri.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  app_service_plan_id = azurerm_app_service_plan.appserviceplan.id
+  source_control {
+    repo_url           = "https://github.com/mrdouglasmorais/terraformbackendnodejs"
+    branch             = "main"
+    manual_integration = true
+    use_mercurial      = false
+  }
 }
