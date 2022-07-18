@@ -17,7 +17,6 @@
 
 ## Configuração de pipelines:
 ```
-_
 -| .github
   -| worflows
     -| prod.yml
