@@ -12,8 +12,7 @@
 
 ## Terraform files:
 ```
--| terraform
-  -| main.tf
+-| main.tf
 ```
 
 ## Configuração de pipelines:
@@ -24,6 +23,9 @@ _
     -| prod.yml
     -| dev.yml
 ```
+
+### Configurando terraform no Azure console
+[Microsoft Azure Integration](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-bash?tabs=bash)
 
 ### Mais detalhes sobre o projeto em:
 [Terraform - Azure Functions](https://medium.com/@mr.douglasmorais23/terraform-a-final-de-contas-o-que-%C3%A9-918f8dcfd09c) <br>
