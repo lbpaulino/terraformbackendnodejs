@@ -27,7 +27,7 @@
 [Microsoft Azure Integration](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-cloud-shell-bash?tabs=bash)
 
 ### Mais detalhes sobre o projeto em:
-[Terraform - Azure BAckend](https://medium.com/@mr.douglasmorais23/terraform-a-final-de-contas-o-que-%C3%A9-918f8dcfd09c) <br>
+[Terraform - Azure Backend](https://medium.com/@mr.douglasmorais23/terraform-a-final-de-contas-o-que-%C3%A9-918f8dcfd09c) <br>
 [Pipelines - Github Actions](https://medium.com/@mr.douglasmorais23/pipeline-web-app-com-terraform-e-github-actions-5e423dfd894d) <br>
 
 Acesse a documentação oficial do [expressjs](https://expressjs.com/pt-br/) para mais informações.
