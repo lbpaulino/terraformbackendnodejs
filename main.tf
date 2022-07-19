@@ -19,7 +19,7 @@ resource "random_integer" "ri" {
 # Criar o grupo de recursos
 resource "azurerm_resource_group" "rg" {
   name     = "myResourceGroup-${random_integer.ri.result}"
-  location = "eastus"
+  location = "centralus"
 }
 # Criar o Plano de Serviço de Aplicativo do Linux
 resource "azurerm_app_service_plan" "appserviceplan" {
