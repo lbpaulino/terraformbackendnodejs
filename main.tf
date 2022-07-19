@@ -38,7 +38,7 @@ resource "azurerm_app_service" "webapp" {
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.appserviceplan.id
   source_control {
-    repo_url           = "https://github.com/mrdouglasmorais/terraformbackendnodejs"
+    repo_url           = "https://github.com/lbpaulino/terraformbackendnodejs"
     branch             = "main"
     manual_integration = true
     use_mercurial      = false
